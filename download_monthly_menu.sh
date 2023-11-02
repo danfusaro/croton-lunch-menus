@@ -49,19 +49,15 @@ if [ -n "$link" ]; then
     # Save the PDF file to a local location with the same name as target_text and a .pdf extension
     pdf_filename="$TMPDIR$(date +"CET_Lunch_%b_%Y").pdf"
     pdf_url=$(url_encode "$href")
-    #curl -s -o "$pdf_filename" "$pdf_url" 2>&1
     echo $pdf_url
     curl "$pdf_url" --output "$pdf_filename"
-    # echo $pdf_filename
-    # echo $pdf_url
-    # echo $TMPDIR
 
     # Check if the PDF file was successfully downloaded
     if [ -s "$pdf_filename" ]; then
         # Print the saved PDF file
-        lp -o page-ranges=1 -o fit-to-page=width "$pdf_filename"
-        # xdg-open $pdf_filename;
-        echo "Wrote to $pdf_filename"
+        lp -o landscape -o page-ranges=1 -o fit-to-page "$pdf_filename"
+        # open $pdf_filename
+        echo "Printing $pdf_filename..."
     else
         echo "Error: PDF file at '$pdf_url' was not downloaded and is not present in '$pdf_filename'"
     fi
